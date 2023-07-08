@@ -1,0 +1,14 @@
+Release notes 
+
+Initial GitHub load (08-07-2023)
+JsonViewer creates a logging and a settngs folder on first start. A log file and a settings file are stored here.
+When a json file is opened, the tree structure and contents are displayed. Search can optionally be used to search for a specific word in the json.
+You can also open a json file with drag and drop.
+
+By pasting a json text in the memo, the tree structure of the json is displayed. If your json is plain text it will be formatted automatically
+Right-clicking on the tree structure displays some collapse and expand options.
+
+
+
+
+
