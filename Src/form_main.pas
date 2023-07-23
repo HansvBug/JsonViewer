@@ -5,11 +5,14 @@ unit Form_Main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
+  LCLIntf, LCLType, Classes, Types, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
   StdCtrls, ExtCtrls, SynEdit, SynHighlighterJScript,  strutils, LazUTF8,
-  LCLTranslator, ActnList, ResourceStrings,
+  LCLTranslator, ResourceStrings,
   Settings, Logging, Settingsmanager, Visual, FormConfigure, FileLocations,
-  SynEditTypes;
+  SynEditTypes, Printers, PrintersDlgs, fppdf
+  ;
+
+
 
 type
 
@@ -17,20 +20,37 @@ type
 
   TFrmMain = class(TForm)
     Button1: TButton;
-    ButtonSearch: TButton;
-    ButtonClose: TButton;
     ButtonClear: TButton;
+    ButtonClose: TButton;
     ButtonSave: TButton;
+    ButtonSearch: TButton;
     cbCaseSensitive: TCheckBox;
     ComboBoxSearch: TComboBox;
-    LabelSynEditPos: TLabel;
+    ImageList1: TImageList;
+    imgBookMarks: TImageList;
     LabelSearchResult: TLabel;
+    LabelSynEditPos: TLabel;
     ListBoxFileNames: TListBox;
     MainMenu1: TMainMenu;
+    MenuItemProgramPrint: TMenuItem;
+    Separator4: TMenuItem;
+    MenuItemPrint: TMenuItem;
+    Separator3: TMenuItem;
     MenuItemSortDesc: TMenuItem;
     MenuItemSortAsc: TMenuItem;
     MenuItemSelectAll: TMenuItem;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    PanelBottom: TPanel;
+    PanelListBoxFileNames: TPanel;
+    PanelMainClient: TPanel;
+    PanelMainRight: TPanel;
+    PanelMemo: TPanel;
+    PanelTrv: TPanel;
+    PanelTrvTop: TPanel;
     PopupMenuListBoxFileNames: TPopupMenu;
+    RadioGroupSearchOptions: TRadioGroup;
     Separator2: TMenuItem;
     MenuItemJsonSave: TMenuItem;
     MenuItemJsonClear: TMenuItem;
@@ -55,19 +75,13 @@ type
     MenuItemProgram: TMenuItem;
     MenuItemProgramClose: TMenuItem;
     MenuItemProgramOpenFile: TMenuItem;
-    PanelTrvTop: TPanel;
-    PanelListBoxFileNames: TPanel;
     PanelTop: TPanel;
-    PanelBottom: TPanel;
-    PanelMemo: TPanel;
-    PanelTrv: TPanel;
     PopupMenuFileNames: TPopupMenu;
     PopupMenuSynEdit: TPopupMenu;
     PopupMenuTrv: TPopupMenu;
-    RadioGroupSearchOptions: TRadioGroup;
     Separator1: TMenuItem;
-    SplitterMainFrm2: TSplitter;
     SplitterMainFrm1: TSplitter;
+    SplitterMainFrm2: TSplitter;
     StatusBarMainFrm: TStatusBar;
     SynEditJsonData: TSynEdit;
     SynJScriptSynJson: TSynJScriptSyn;
@@ -102,6 +116,8 @@ type
     procedure ListBoxFileNamesMouseLeave(Sender: TObject);
     procedure ListBoxFileNamesMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
+    procedure MenuItemPrintClick(Sender: TObject);
+    procedure MenuItemProgramPrintClick(Sender: TObject);
     procedure MenuItemSelectAllClick(Sender: TObject);
     procedure MenuItemCollapseSelectedNodeClick(Sender: TObject);
     procedure MenuItemCollapseAllClick(Sender: TObject);
@@ -119,7 +135,7 @@ type
     procedure MenuItemSortDescClick(Sender: TObject);
     procedure PanelBottomMouseLeave(Sender: TObject);
     procedure RadioGroupSearchOptionsSelectionChanged(Sender: TObject);
-    procedure SynEditJsonDataChangeUpdating(AnUpdating: Boolean);
+    procedure SynEditJsonDataChange(Sender: TObject);
     procedure SynEditJsonDataKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure SynEditJsonDataMouseDown(Sender: TObject; Button: TMouseButton;
@@ -133,7 +149,7 @@ type
   private
     FTreeViewItemIndex : Integer;
     FFileCounter : Integer; // number of opened files in current session
-
+    FCurrFile : String;     // current filename if available. Used for the printjob name.
     FPtrFilename : PtrFileObject;
 
     procedure SetStatusbarText(aText : String; overrideSetting : Boolean);
@@ -157,10 +173,13 @@ type
     procedure GetMruList;
     procedure ParseDroppedFiles(FileNames: array of string);
     function GetTrvNodePath(aText : String) : String;
+    procedure PrintSynEdit(synEdit : TSynEdit);
+    function mm2px(mm: Double; ppi: Integer): Integer;
 
   public
     Logging : TLog_File;
     Visual  : TVisual;
+    lbSort : TListBox;
   end;
 
 var
@@ -193,6 +212,7 @@ function CompareDescending(List: TStringList; Index1, Index2: Integer
 begin
   result := CompareStr(List[Index1], List[Index2]) * -1
 end;
+
 {%endregion sort function}
 
 procedure TFrmMain.MenuItemProgramOpenFileClick(Sender: TObject);
@@ -280,7 +300,7 @@ begin
   end;
 end;
 
-procedure TFrmMain.SynEditJsonDataChangeUpdating(AnUpdating: Boolean);
+procedure TFrmMain.SynEditJsonDataChange(Sender: TObject);
 var
   s : String;
 begin
@@ -293,16 +313,25 @@ begin
       MenuItemJsonClear.Enabled := False;
       MenuItemJsonPrettify.Enabled := False;
       SynEditJsonData.PopupMenu := nil;
-    end;
-  end;
+      MenuItemProgramPrint.Enabled := False;
+      Separator4.Enabled := False;
 
- if (s <> '') or (SynEditJsonData.Lines.Count > 1) then begin
+      TreeViewJsonItems.Items.Clear;  // Clear the treeview when delete is pressed
+    end;
+  end
+  else if (s <> '') or (SynEditJsonData.Lines.Count > 1) then begin
     ButtonSave.Enabled := True;
     MenuItemJsonSave.Enabled := True;
     ButtonClear.Enabled := True;
     MenuItemJsonClear.Enabled := True;
     MenuItemJsonPrettify.Enabled := True;
     SynEditJsonData.PopupMenu := PopupMenuSynEdit;
+    MenuItemProgramPrint.Enabled := True;
+    Separator4.Enabled := True;
+
+    if TreeViewJsonItems.Items.Count = 0 then begin // Refill treeview when json was deleted en get back with CTRL+z
+      PrettifyJson(SynEditJsonData);
+    end;
   end
   else begin
     ButtonSave.Enabled := False;
@@ -311,6 +340,11 @@ begin
     MenuItemJsonClear.Enabled := False;
     MenuItemJsonPrettify.Enabled := False;
     SynEditJsonData.PopupMenu := nil;
+    MenuItemProgramPrint.Enabled := False;
+    Separator4.Enabled := False;
+
+    TreeViewJsonItems.Items.Clear;
+    TreeViewJsonItems.Items.Clear;  // Clear the treeview when delete is pressed
   end;
 end;
 
@@ -332,38 +366,47 @@ procedure TFrmMain.SynEditJsonDataPaste(Sender: TObject; var AText: String;
 var
   s : String;
   CanPaste : Boolean;
+
+  i, j,k  : Integer;
 begin
- s := SynEditJsonData.lines[0];
-  if  s = '' then begin
-    if  SynEditJsonData.Lines.Count <= 1  then begin
-      CanPaste := true;
+
+  i := SynEditJsonData.SelStart;
+  j := SynEditJsonData.SelEnd;
+  k := Length(SynEditJsonData.Text);
+
+  if (SynEditJsonData.SelStart = 1) and (SynEditJsonData.SelEnd = Length(SynEditJsonData.Text) - 1) then begin
+    s := SynEditJsonData.lines[0];
+    if  s = '' then begin
+      if  SynEditJsonData.Lines.Count <= 1  then begin
+        CanPaste := true;
+      end
+      else begin
+        CanPaste := false;
+      end;
+    end
+    else if (s <> '') or (SynEditJsonData.Lines.Count > 1) then begin
+      CanPaste := false;
     end
     else begin
       CanPaste := false;
     end;
-  end
-  else if (s <> '') or (SynEditJsonData.Lines.Count > 1) then begin
-    CanPaste := false;
-  end
-  else begin
-    CanPaste := false;
-  end;
 
-  if CanPaste then begin
-    SynEditJsonData.LineText := AText;
-    AText := '';  // Clear the pasted text.
-    PrettifyJson(SynEditJsonData);
-  end
-  else begin
-    if MessageDlg(rsWarning, rsOverwritetext,
-                  mtWarning, [mbYes, mbNo], 0, mbNo) = mrYes then begin
-      SynEditJsonData.Clear;
+    if CanPaste then begin
       SynEditJsonData.LineText := AText;
       AText := '';  // Clear the pasted text.
       PrettifyJson(SynEditJsonData);
     end
     else begin
-      AText := '';
+      if MessageDlg(rsWarning, rsOverwritetext,
+                    mtWarning, [mbYes, mbNo], 0, mbNo) = mrYes then begin
+        SynEditJsonData.Clear;
+        SynEditJsonData.LineText := AText;
+        AText := '';  // Clear the pasted text.
+        PrettifyJson(SynEditJsonData);
+      end
+      else begin
+        AText := '';
+      end;
     end;
   end;
 end;
@@ -387,7 +430,8 @@ begin
     MenuItemProgramMruList.Clear;
 
     if length(AllFileNames) <= NumberOfRecentFiles then begin
-      for i:= length(AllFileNames)-1 downto 0 do begin
+      //for i:= length(AllFileNames)-1 downto 0 do begin
+      for i:= 0 to length(AllFileNames)-1 do begin
         mi := TMenuItem.Create(MenuItemProgramMruList);
         mi.Caption := AllFileNames[i].Name;
         mi.Tag := AllFileNames[i].Counter;
@@ -427,7 +471,7 @@ var
 begin
   j := (Sender as tMenuItem).MenuIndex;
 
-  // Check menu item
+  // uncheck menu item
   for i := 0 to MenuItemProgramMruList.Count-1 do begin
     MenuItemProgramMruList[i].Checked := False;
   end;
@@ -474,7 +518,7 @@ begin
     FTreeViewItemIndex := Node.AbsoluteIndex;  // Get the index of the selected node
 
     // Geth the path of the selected node.
-    Caption :=  GetTrvNodePath(Node.GetTextPath);
+    SetStatusbarText(GetTrvNodePath(Node.GetTextPath), true);
   end;
 end;
 
@@ -573,22 +617,30 @@ begin
 end;
 
 procedure TFrmMain.Initialize;
+var
+  i : Integer;
 begin
   Visual := TVisual.Create;
   Visual.AlterSystemMenu;
   Visual.Free;  // Voorlopig
-  // TreeViewJsonItems.ReadOnly := True; Optie van maken
-  // SynEditJsonData.ReadOnly := True; Optie van maken
+  // TreeViewJsonItems.ReadOnly := True; TODO Optie van maken
+  // SynEditJsonData.ReadOnly := True; TODO Optie van maken
   ButtonSave.Enabled := False;
   FrmMain.KeyPreview := True;  // Used for find next in TSynEdit. F3
   StatusBarMainFrm.Panels.Items[2].Text := '';
   ComboBoxSearch.Sorted := True;
-  ComboBoxSearch.AutoCompleteText := [cbactEnabled, cbactSearchCaseSensitive];  // TODo optioneel maken
+  ComboBoxSearch.AutoCompleteText := [cbactEnabled, cbactSearchCaseSensitive];
   FFileCounter := 0;
 
   SplitterMainFrm1.ResizeStyle := rsLine;  // Avoid strange drawing lines while moving the splitter.
 
   GetMruList; // MRU list
+  MenuItemProgramPrint.Enabled := False;
+
+  // uncheck menu item
+  for i := 0 to MenuItemProgramMruList.Count-1 do begin
+    MenuItemProgramMruList[i].Checked := False;
+  end;
 end;
 
 procedure TFrmMain.ReadSettings;
@@ -812,20 +864,31 @@ begin
 
     if JsonFormatter.JsonFormatSuccess then begin
       AddFileNameToListBox(aFileName);
+      FCurrFile := ExtractFileName(aFileName);
+
+      JsonFormatter.Free;
+
+      TreeViewJsonItems.Selected := TreeViewJsonItems.Items.GetFirstNode;
+      SynEditJsonData.SetFocus;
+      SynEditJsonData.SelStart := 0;
+    end
+    else begin
+      FCurrFile := '';
     end;
-
-    JsonFormatter.Free;
-
-    TreeViewJsonItems.Selected := TreeViewJsonItems.Items.GetFirstNode;
-    SynEditJsonData.SetFocus;
-    SynEditJsonData.SelStart := 0;
 
     if  SynEditJsonData.Lines.Count > 0 then begin
       ButtonSave.Enabled := True;
+      SynEditJsonData.PopupMenu := PopupMenuSynEdit;
+      MenuItemProgramPrint.Enabled := True;
+      Separator4.Enabled := True;
     end
     else begin
       ButtonSave.Enabled := False;
+      SynEditJsonData.PopupMenu := nil;
+      MenuItemProgramPrint.Enabled := False;
+      Separator4.Enabled := False;
     end;
+
   end;
 end;
 
@@ -878,7 +941,6 @@ begin
   end;
 
   StartLogging;
-  GetMruList;
   Initialize;
 end;
 
@@ -946,18 +1008,28 @@ begin
         AddToMruMenu;
         AddFileNameToListBox(FileNames[i]);
 
+        FCurrFile := ExtractFileName(FileNames[i]);
         StatusBarMainFrm.Panels.Items[2].Text := rsFile + extractFilename(FileNames[i]) + '     ';
 
         TreeViewJsonItems.Selected := TreeViewJsonItems.Items.GetFirstNode;
         SynEditJsonData.SetFocus;
         SynEditJsonData.SelStart := 0;
+      end
+      else begin
+        FCurrFile := '';
+      end;
 
-        if  SynEditJsonData.Lines.Count > 0 then begin
-          ButtonSave.Enabled := True;
-        end
-        else begin
-          ButtonSave.Enabled := False;
-        end;
+      if  SynEditJsonData.Lines.Count > 0 then begin
+        ButtonSave.Enabled := True;
+        SynEditJsonData.PopupMenu := PopupMenuSynEdit;
+        MenuItemProgramPrint.Enabled := True;
+        Separator4.Enabled := True;
+      end
+      else begin
+        ButtonSave.Enabled := False;
+        SynEditJsonData.PopupMenu := nil;
+        MenuItemProgramPrint.Enabled := False;
+        Separator4.Enabled := False;
       end;
 
       JsonFormatter.Free;
@@ -1039,6 +1111,115 @@ begin
       SetStatusbarText('', true);
     end;
   end;
+end;
+
+procedure TFrmMain.PrintSynEdit(synEdit : TSynEdit);
+var
+  printDialog: TPrintDialog;
+  i, yline : Integer;
+  pageWidth: Integer;
+  pageHeight: Integer;
+  leftMargin: Integer;
+  topMargin: Integer;
+  h: Integer;
+  R: TRect;
+  s: String = '';
+  dist: Integer;
+  fd: TFontData;
+begin
+  printDialog := TPrintDialog.Create(nil);
+  try
+    if printDialog.Execute then
+    begin
+      SetStatusbarText(rsPrinting, true);
+      screen.Cursor := crHourglass;
+      Printer.BeginDoc;
+      try
+        if FCurrFile <> '' then begin
+          //The print job title, which will show up in the printer queue dialog.
+          Printer.Title := 'JsonViewer - ' + FCurrFile;
+        end;
+        // Calculate margins and printable pagesize in printer resolution
+        leftMargin := mm2px(SetMan.PrintLeftMargin, Printer.XDPI);
+        topMargin := mm2px(SetMan.PrintTopMargin, Printer.YDPI);
+        pageWidth := Printer.PageWidth - leftMargin - mm2px(SetMan.PrintRightMargin, Printer.XDPI);
+        pageHeight := Printer.PageHeight - topMargin - mm2px(SetMan.PrintBottomMargin, Printer.YDPI);
+        // Assign the memo font to the printer.
+        Printer.Canvas.Font.Assign(synEdit.Font);
+        // Special treatment for the default font size:
+        if synEdit.Font.Size = 0 then
+        begin
+          // Use GetFontData to determine the font height in the memo, at screen resolution
+          fd := GetFontData(synEdit.Font.Reference.Handle);
+          // fd.Height tells us the height of the font in screen pixels.
+          // Calculate the font size in pts from fd.Height: 1pt = 1/72 inch
+          // and assign this to the printer's Font.Size which automatically converts
+          // to the printer resolution
+          Printer.Canvas.Font.Size := round(abs(fd.Height) / synEdit.Font.PixelsPerInch * 72);
+
+          // or:
+          // convert fd.Height to inches (value / screen ppi) and multiply by the
+          // printer's ppi to get the height in printer pixels.
+          // Assign this to the printer's Font.Height (rather than Font.Size).
+          // And note that there is a convention that Font.Height should be
+          // a negative value because it is measured in pixels.
+          //Printer.canvas.Font.Height := -round(abs(fd.Height) / Memo1.Font.PixelsPerInch * Printer.YDPI);
+        end;
+
+        // Calculate the extra spacing between paragraphs
+        dist := Printer.Canvas.TextHeight('Tg') div 2;
+
+        // Iterate over all (non-wrapped) lines of the memo.
+        yLine := 0;
+        for I := 0 to synEdit.Lines.Count - 1 do
+        begin
+          // Extract the text in a paragraph.
+          s := synEdit.Lines[I];
+          // Calculate the rectangle which encloses the word-wrapped paragraph
+          R := Rect(0, 0, pageWidth, 0);
+          DrawText(Printer.Canvas.Handle, PChar(s), Length(s), R, DT_WORDBREAK or DT_CALCRECT);
+          // h is the height of the printed paragraph plus some spacing between
+          // paragraphs.
+          h := R.Bottom - R.Top + dist;
+          // If the full paragraph does not fit on the current page, we must
+          // generate a page-break.
+          if yLine + h > pageHeight then
+          begin
+            yLine := 0;
+            Printer.NewPage;
+          end;
+          // Print the word-wrapped paragraph
+          OffsetRect(R, leftMargin, topmargin + yLine);
+          DrawText(Printer.Canvas.Handle, PChar(s), Length(s), R, DT_WORDBREAK);
+          // Advance the y position to the next paragraph.
+          yLine := yLine + h;
+        end;
+      finally
+        Printer.EndDoc;
+        SetStatusbarText('', true);
+        screen.Cursor := crDefault;
+      end;
+    end;
+  finally
+    printDialog.Free;
+  end;
+end;
+
+function TFrmMain.mm2px(mm: Double; ppi: Integer): Integer;
+begin
+  // Converts millimeters to pixels for the specified resolution, given in
+  // pixels per inch (ppi).
+  Result := round(mm/25.4 * ppi);
+end;
+
+procedure TFrmMain.MenuItemPrintClick(Sender: TObject);
+begin
+  PrintSynEdit(SynEditJsonData);
+end;
+
+procedure TFrmMain.MenuItemProgramPrintClick(Sender: TObject);
+begin
+  PrintSynEdit(SynEditJsonData);
 end;
 
 procedure TFrmMain.MenuItemSelectAllClick(Sender: TObject);
@@ -1179,6 +1360,11 @@ begin
   LabelSearchResult.Caption := '0 st.';
   StatusBarMainFrm.Panels.Items[2].Text := '';
   ButtonSave.Enabled := False;
+  SynEditJsonData.PopupMenu := nil;
+  MenuItemProgramPrint.Enabled := False;
+  Separator4.Enabled := False;
+  LabelSynEditPos.Caption := 'Line: 1 - col: 1';
+
 end;
 
 procedure TFrmMain.SaveSynEdit(synEdit: TSynEdit);
@@ -1228,21 +1414,108 @@ begin
   ClearData(SynEditJsonData);
 end;
 
+
+
 procedure TFrmMain.Button1Click(Sender: TObject);
+const
+  LEFT_MARGIN = 20;   // mm
+  RIGHT_MARGIN = 20;  // mm
+  TOP_MARGIN = 20;    // mm
+  BOTTOM_MARGIN = 20; // mm
 var
-  sl: TStringList;
+  printDialog: TPrintDialog;
+  i, yline : Integer;
+  pageWidth: Integer;
+  pageHeight: Integer;
+  leftMargin: Integer;
+  topMargin: Integer;
+  h: Integer;
+  R: TRect;
+  s: String = '';
+  hasWordWrap: Boolean;
+  dist: Integer;
+  fd: TFontData;
 begin
-  ListBoxFileNames.Sorted := False;
 
-  //desc sort werkt !!
-  sl:= TStringList.Create;
-  sl.Assign(ListBoxFileNames.Items);
-  sl.CustomSort(@CompareDescending);
-  ListBoxFileNames.Items.Assign(sl);
-  sl.free;
 
+  printDialog := TPrintDialog.Create(nil);
+  try
+    if printDialog.Execute then
+    begin
+//      hasWordWrap := SynEditJsonData.WordWrap;
+      // Because word-wrapping will be different in the print-out than on the
+      // screen we turn the memo's WordWrap property off. Now Memo.Lines[i]
+      // indicate the individual paragraphs in the text.
+//      SynEditJsonData.WordWrap := false;
+      Printer.BeginDoc;
+      try
+        //if
+        Printer.Title := 'JsonViewer'; // The print job title, which will show up in the printer queue dialog.
+        // Calculate margins and printable pagesize in printer resolution
+        leftMargin := mm2px(LEFT_MARGIN, Printer.XDPI);
+        topMargin := mm2px(TOP_MARGIN, Printer.YDPI);
+        pageWidth := Printer.PageWidth - leftMargin - mm2px(RIGHT_MARGIN, Printer.XDPI);
+        pageHeight := Printer.PageHeight - topMargin - mm2px(BOTTOM_MARGIN, Printer.YDPI);
+        // Assign the memo font to the printer.
+        Printer.Canvas.Font.Assign(SynEditJsonData.Font);
+        // Special treatment for the default font size:
+        if SynEditJsonData.Font.Size = 0 then
+        begin
+          // Use GetFontData to determine the font height in the memo, at screen resolution
+          fd := GetFontData(SynEditJsonData.Font.Reference.Handle);
+          // fd.Height tells us the height of the font in screen pixels.
+          // Calculate the font size in pts from fd.Height: 1pt = 1/72 inch
+          // and assign this to the printer's Font.Size which automatically converts
+          // to the printer resolution
+          Printer.Canvas.Font.Size := round(abs(fd.Height) / SynEditJsonData.Font.PixelsPerInch * 72);
+
+          // or:
+          // convert fd.Height to inches (value / screen ppi) and multiply by the
+          // printer's ppi to get the height in printer pixels.
+          // Assign this to the printer's Font.Height (rather than Font.Size).
+          // And note that there is a convention that Font.Height should be
+          // a negative value because it is measured in pixels.
+          //Printer.canvas.Font.Height := -round(abs(fd.Height) / Memo1.Font.PixelsPerInch * Printer.YDPI);
+        end;
+
+        // Calculate the extra spacing between paragraphs
+        dist := Printer.Canvas.TextHeight('Tg') div 2;
+
+        // Iterate over all (non-wrapped) lines of the memo.
+        yLine := 0;
+        for I := 0 to SynEditJsonData.Lines.Count - 1 do
+        begin
+          // Extract the text in a paragraph.
+          s := SynEditJsonData.Lines[I];
+          // Calculate the rectangle which encloses the word-wrapped paragraph
+          R := Rect(0, 0, pageWidth, 0);
+          DrawText(Printer.Canvas.Handle, PChar(s), Length(s), R, DT_WORDBREAK or DT_CALCRECT);
+          // h is the height of the printed paragraph plus some spacing between
+          // paragraphs.
+          h := R.Bottom - R.Top + dist;
+          // If the full paragraph does not fit on the current page, we must
+          // generate a page-break.
+          if yLine + h > pageHeight then
+          begin
+            yLine := 0;
+            Printer.NewPage;
+          end;
+          // Print the word-wrapped paragraph
+          OffsetRect(R, leftMargin, topmargin + yLine);
+          DrawText(Printer.Canvas.Handle, PChar(s), Length(s), R, DT_WORDBREAK);
+          // Advance the y position to the next paragraph.
+          yLine := yLine + h;
+        end;
+      finally
+        Printer.EndDoc;
+        // Restore the WordWrap of the memo.
+//        SynEditJsonData.WordWrap := hasWordWrap;
+      end;
+    end;
+  finally
+    printDialog.Free;
+  end;
 end;
-
 
 procedure TFrmMain.ButtonClearMouseLeave(Sender: TObject);
 begin
@@ -1253,7 +1526,6 @@ procedure TFrmMain.ButtonClearMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
   SetStatusbarText(Visual.Helptext(Sender, rsClearTrvAndMemo), False);
-  ButtonSave.Enabled := False;
 end;
 
 procedure TFrmMain.ButtonCloseMouseLeave(Sender: TObject);

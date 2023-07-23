@@ -25,9 +25,18 @@ type
     ColorButtonKeyAttib: TColorButton;
     ColorButtonBracketAttib: TColorButton;
     ColorButtonCommentAttib: TColorButton;
+    EditLeftMargin: TEdit;
+    EditTopMargin: TEdit;
+    EditBottomMargin: TEdit;
+    EditRightMargin: TEdit;
     GroupBox1: TGroupBox;
+    GroupBoxPrintOptions: TGroupBox;
     GroupBoxDivers: TGroupBox;
     GroupBoxLogging: TGroupBox;
+    LabelLeftMargin: TLabel;
+    LabelTopMargin: TLabel;
+    LabelBottomMargin: TLabel;
+    LabelRightMargin: TLabel;
     LabelStringAttrib: TLabel;
     LabelStatus: TLabel;
     LabelStringAttrib1: TLabel;
@@ -227,6 +236,12 @@ begin
     ColorButtonBracketAttib.ButtonColor := SetMan.BracketAttribColor;
     ColorButtonCommentAttib.ButtonColor := SetMan.CommentAtribColor;
 
+    EditLeftMargin.Text := IntToStr(SetMan.PrintLeftMargin);
+    EditRightMargin.Text := IntToStr(SetMan.PrintRightMargin);
+    EditTopMargin.Text := IntToStr(SetMan.PrintTopMargin);
+    EditBottomMargin.Text := IntToStr(SetMan.PrintBottomMargin);
+
+
   //..add settings
 
 
@@ -290,6 +305,10 @@ begin
   SetMan.BracketAttribColor := ColorButtonBracketAttib.ButtonColor;
   SetMan.CommentAtribColor := ColorButtonCommentAttib.ButtonColor;
 
+  SetMan.PrintLeftMargin := StrToInt(EditLeftMargin.Text);
+  SetMan.PrintRightMargin := StrToInt(EditRightMargin.Text);
+  SetMan.PrintTopMargin := StrToInt(EditTopMargin.Text);
+  SetMan.PrintBottomMargin := StrToInt(EditBottomMargin.Text);
   // ..add settings
 
   SetMan.SaveSettings;

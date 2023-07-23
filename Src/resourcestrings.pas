@@ -35,6 +35,7 @@ resourcestring
   rsFileDoesNotExists  = 'The file does not exist.'; // 'Het bestand bestaat niet.'
   rsRemoveFileFromList = 'Remove the file from the menu list?';          //'Het bestand uit de menulijst halen?'
   rsOverwritetext      = 'Do you want to overwrite the existing text?';  // 'Wilt u de bestaande tekst overschrijven?'
+  rsPrinting           = 'Printing...';                                  // 'Bezig met printen...'
 
   // Form configure
   rsActivateLogging  = 'Activate the log functionality.';                       // 'Activeer de log functionaliteit.'
@@ -69,7 +70,7 @@ resourcestring
   // SettingsManager
   rsIsReady            = ' is ready.';                                //' is gereed.'
   rsHasFailed          = ' has failed.';                              //' is mislukt.'
-  rsGetScreenPos       = 'Ophalen schermpositie van : ';              //'Ophalen schermpositie van : '
+  rsGetScreenPos       = 'Retrieve screen position from :';           //'Ophalen schermpositie van : '
   rsStoreScreenPos     = 'Save screen position of : ';                //'Opslaan schermpositie van : '
   rsStoreMruError      = 'Error saving recently opened files list.';  //'Fout bij het opslaan van de recent geopende bestanden lijst.'
   rsGetMruError        = 'Error reading recently opened files list.'; //'Fout bij het ophalen van de recent geopende bestanden lijst.'

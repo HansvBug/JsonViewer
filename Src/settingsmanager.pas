@@ -22,6 +22,7 @@ type
       FStringAttribColor, FSymbolAttribColor, FNumberattribColor: Integer;
       FKeyAttribColor, FBracketAttribColor, FCommentAtribColor : Integer;
       FTrvOrMemoSearch : Integer;
+      FPrintLeftMargin, FPrintRightMargin, FPrintTopMargin, FPrintBottomMargin : Integer;
 
       function  CheckFormIsEntireVisible(Rect: TRect): TRect;
       procedure ReadSettings;
@@ -58,6 +59,10 @@ type
       property TrvOrMemoSearch       : Integer Read FTrvOrMemoSearch     write FTrvOrMemoSearch default 0;
       property CaseSensitiveSearch   : Boolean Read FCaseSensitiveSearch Write FCaseSensitiveSearch default False;
 
+      property PrintLeftMargin       : Integer Read FPrintLeftMargin     Write FPrintLeftMargin default 20;
+      property PrintRightMargin      : Integer Read FPrintRightMargin    Write FPrintRightMargin default 20;
+      property PrintTopMargin        : Integer Read FPrintTopMargin      Write FPrintTopMargin default 20;
+      property PrintBottomMargin     : Integer Read FPrintBottomMargin   Write FPrintBottomMargin default 20;
   end;
 
 const
@@ -143,6 +148,11 @@ begin
 
       TrvOrMemoSearch := ReadInteger('Configure', 'TrvOrMemoSearch', 0);
 
+      PrintLeftMargin := ReadInteger('Configure', 'PrintLeftMargin', 0);
+      PrintRightMargin := ReadInteger('Configure', 'PrintRightMargin', 0);
+      PrintTopMargin := ReadInteger('Configure', 'PrintTopMargin', 0);
+      PrintBottomMargin := ReadInteger('Configure', 'PrintBottomMargin', 0);
+
     finally
       Free;
     end;
@@ -171,6 +181,12 @@ begin
       WriteString('Configure', 'DefaultLanguage', DefaultLanguage);
       WriteBool('Configure', 'CaseSensitiveSearch', CaseSensitiveSearch);
       WriteInteger('Configure', 'TrvOrMemoSearch', TrvOrMemoSearch);
+
+      WriteInteger('Configure', 'PrintLeftMargin', PrintLeftMargin);
+      WriteInteger('Configure', 'PrintRightMargin', PrintRightMargin);
+      WriteInteger('Configure', 'PrintTopMargin', PrintTopMargin);
+      WriteInteger('Configure', 'PrintBottomMargin', PrintBottomMargin);
+
     finally
       Free;
     end;
@@ -319,7 +335,7 @@ begin
           Settings.EraseSection('MRU');
 
           if length(Files) <= NumberOfRecentFiles then begin
-            for i:= length(Files)-1 downto 0 do begin
+            for i := 0 to length(Files)-1 do begin
               WriteString('MRU', 'File_' + IntToStr(Counter), Files[i].Location + Files[i].Name);
               Inc(Counter);
             end;

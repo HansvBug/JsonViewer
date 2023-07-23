@@ -1,13 +1,13 @@
 object Frm_Configure: TFrm_Configure
-  Left = 2395
+  Left = 2325
   Height = 636
-  Top = 264
+  Top = 188
   Width = 928
   BorderStyle = bsToolWindow
   Caption = 'Frm_Configure'
   ClientHeight = 636
   ClientWidth = 928
-  Color = clWindow
+  Color = 13882323
   DesignTimePPI = 120
   Icon.Data = {
     866B01000000010001009696000001002000706B010016000000280000009600
@@ -2978,10 +2978,10 @@ object Frm_Configure: TFrm_Configure
     Left = 240
     Height = 100
     Top = 16
-    Width = 215
+    Width = 168
     Caption = 'Miscellaneous'
     ClientHeight = 75
-    ClientWidth = 211
+    ClientWidth = 164
     TabOrder = 2
     object CheckBoxDisplayHelpText: TCheckBox
       Left = 8
@@ -3642,6 +3642,88 @@ object Frm_Configure: TFrm_Configure
       Visible = False
     end
   end
+  object GroupBoxPrintOptions: TGroupBox
+    Left = 432
+    Height = 100
+    Top = 24
+    Width = 484
+    Caption = 'Print'
+    ClientHeight = 75
+    ClientWidth = 480
+    TabOrder = 4
+    object EditLeftMargin: TEdit
+      Left = 144
+      Height = 28
+      Top = 8
+      Width = 48
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 0
+      Text = '20'
+    end
+    object EditRightMargin: TEdit
+      Left = 144
+      Height = 28
+      Top = 40
+      Width = 48
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 1
+      Text = '20'
+    end
+    object LabelLeftMargin: TLabel
+      Left = 8
+      Height = 20
+      Top = 12
+      Width = 116
+      Caption = 'Left margin (mm)'
+      ParentColor = False
+    end
+    object LabelRightMargin: TLabel
+      Left = 8
+      Height = 20
+      Top = 48
+      Width = 126
+      Caption = 'Right margin (mm)'
+      ParentColor = False
+    end
+    object LabelTopMargin: TLabel
+      Left = 224
+      Height = 20
+      Top = 12
+      Width = 116
+      Caption = 'Top margin (mm)'
+      ParentColor = False
+    end
+    object LabelBottomMargin: TLabel
+      Left = 224
+      Height = 20
+      Top = 48
+      Width = 141
+      Caption = 'Bottom margin (mm)'
+      ParentColor = False
+    end
+    object EditTopMargin: TEdit
+      Left = 376
+      Height = 28
+      Top = 8
+      Width = 48
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 2
+      Text = '20'
+    end
+    object EditBottomMargin: TEdit
+      Left = 376
+      Height = 28
+      Top = 40
+      Width = 48
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 3
+      Text = '20'
+    end
+  end
   object SynJScriptSynConfig: TSynJScriptSyn
     Enabled = False
     BracketAttri.Foreground = clRed
@@ -3654,7 +3736,7 @@ object Frm_Configure: TFrm_Configure
     SpaceAttri.Foreground = clDefault
     StringAttri.Foreground = clDefault
     SymbolAttri.Foreground = clDefault
-    Left = 580
-    Top = 50
+    Left = 560
+    Top = 184
   end
 end

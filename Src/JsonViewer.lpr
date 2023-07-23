@@ -6,12 +6,9 @@ uses
   {$IFDEF UNIX}
   cthreads,
   {$ENDIF}
-  {$IFDEF HASAMIGA}
-  athreads,
-  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, DefaultTranslator, lcltranslator, Form_Main, ResourceStrings, 
-SynEditSearch, JsonFloat4Number
+  Forms, DefaultTranslator, lcltranslator, Form_Main,
+  SynEditSearch, printer4lazarus, PrinterUtils
   { you can add units after this };
 
 {$R *.res}
