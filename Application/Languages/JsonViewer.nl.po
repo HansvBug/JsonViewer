@@ -1,0 +1,448 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#: jsonformatter.sarray
+#, object-pascal-format
+msgid "Array (%d elements)"
+msgstr "Array (%d elements)"
+
+#: jsonformatter.sempty
+msgid "Empty document"
+msgstr "Empty document"
+
+#: jsonformatter.snull
+msgid "null"
+msgstr "null"
+
+#: jsonformatter.sobject
+#, object-pascal-format
+msgid "Object (%d members)"
+msgstr "Object (%d members)"
+
+#: resourcestrings.rsactivatelogging
+msgid "Activate the log functionality."
+msgstr "Activeer de log functionaliteit."
+
+#: resourcestrings.rsappendlogfile
+msgid "Append existing log file."
+msgstr "Vul het bestaande logbestand aan."
+
+#: resourcestrings.rsbussyformatingjson
+msgid "Opening and formatting the Jsonfile..."
+msgstr "Bezig met het openen en formateren van de Jsonfile..."
+
+#: resourcestrings.rscleartrvandmemo
+msgid "Clear treeview and memo."
+msgstr "Maak treeview en memo leeg."
+
+#: resourcestrings.rscloseprogram
+msgid "Close the program."
+msgstr "Sluit het programma."
+
+#: resourcestrings.rscreatesettngsfilefaild
+msgid "Creating the settings file failed."
+msgstr "Het maken van het settings bestand is mislukt."
+
+#: resourcestrings.rserror
+msgid "Error."
+msgstr "Fout."
+
+#: resourcestrings.rserrormessage
+msgid "Error message:"
+msgstr "Foutmelding:"
+
+#: resourcestrings.rsfile
+msgid "File: "
+msgstr "Bestand: "
+
+#: resourcestrings.rsfiledoesnotexists
+msgid "The file does not exist."
+msgstr "Het bestand bestaat niet."
+
+#: resourcestrings.rsformatjsonfailed
+msgid "Formatting the json file failed."
+msgstr "Het formateren van het json bestand is mislukt."
+
+#: resourcestrings.rsformatjsontext
+msgid "Format the Json text."
+msgstr "Formateer de Json tekst."
+
+#: resourcestrings.rsformconfigure
+msgctxt "resourcestrings.rsformconfigure"
+msgid "Options"
+msgstr "Instellingen"
+
+#: resourcestrings.rsformmain
+msgid "Json Viewer"
+msgstr "Json Viewer"
+
+#: resourcestrings.rsgetmruerror
+msgid "Error reading recently opened files list."
+msgstr "Fout bij het ophalen van de recent geopende bestanden lijst."
+
+#: resourcestrings.rsgetscreenpos
+msgid "Ophalen schermpositie van : "
+msgstr "Ophalen schermpositie van : "
+
+#: resourcestrings.rshasfailed
+msgid " has failed."
+msgstr " is mislukt."
+
+#: resourcestrings.rshighlighttrvnode
+msgid "Highlight treeview node under mouse pointer."
+msgstr "Oplichten treeview node onder de muis aanwijzer."
+
+#: resourcestrings.rsisready
+msgid " is ready."
+msgstr " is gereed."
+
+#: resourcestrings.rslogdate
+msgctxt "resourcestrings.rslogdate"
+msgid " Date   : "
+msgstr " Datum    : "
+
+#: resourcestrings.rslogdebug
+msgctxt "resourcestrings.rslogdebug"
+msgid " : DEBUG       | "
+msgstr " : DEBUG       | "
+
+#: resourcestrings.rslogerror
+msgid " : ERROR       | "
+msgstr " : FOUT         | "
+
+#: resourcestrings.rslogerrstartlogging
+msgctxt "resourcestrings.rslogerrstartlogging"
+msgid "ERROR | Unexpected error occurred when starting the logging procedure."
+msgstr "FOUT      | Onverwachte fout opgetreden bij de opstart van de logging procedure."
+
+#: resourcestrings.rsloginfoabortlogging
+msgctxt "resourcestrings.rsloginfoabortlogging"
+msgid "INFORMATION | After 10 attempts, saving to the log file was aborted."
+msgstr "INFORMATIE | Na 10 pogingen is het opslaan in het logbestand afgebroken."
+
+#: resourcestrings.rsloginformation
+msgctxt "resourcestrings.rsloginformation"
+msgid " : INFORMATION | "
+msgstr " : INFORMATIE   | "
+
+#: resourcestrings.rslogissaved
+msgctxt "resourcestrings.rslogissaved"
+msgid " is closed"
+msgstr " is afgesloten"
+
+#: resourcestrings.rslogprogram
+msgctxt "resourcestrings.rslogprogram"
+msgid " Program: "
+msgstr " Programma: "
+
+#: resourcestrings.rslogprogram_1
+msgctxt "resourcestrings.rslogprogram_1"
+msgid " Program "
+msgstr " Programma "
+
+#: resourcestrings.rslogversion
+msgctxt "resourcestrings.rslogversion"
+msgid " Version: "
+msgstr " Versie   : "
+
+#: resourcestrings.rslogwarning
+msgctxt "resourcestrings.rslogwarning"
+msgid " : WARNING     | "
+msgstr " : WAARSCHUWING | "
+
+#: resourcestrings.rsmessage
+msgid "Message:"
+msgstr "Melding:"
+
+#: resourcestrings.rsmissingfolderwriterights
+msgid "You do not have write permissions in the folder."
+msgstr "U heeft geen schrijfrechten in de map."
+
+#: resourcestrings.rsnotfound
+msgid " was not found."
+msgstr " is niet gevonden."
+
+#: resourcestrings.rsopenfiledlgtitle
+msgid "Open a Json file"
+msgstr "Open een Json bestand"
+
+#: resourcestrings.rsoverwritetext
+msgid "Do you want to overwrite the existing text?"
+msgstr "Wilt u de bestaande tekst overschrijven?"
+
+#: resourcestrings.rsready
+msgid "Ready."
+msgstr "Gereed."
+
+#: resourcestrings.rsremovefilefromlist
+msgid "Remove the file from the menu list?"
+msgstr "Het bestand uit de menulijst verwijderen?"
+
+#: resourcestrings.rssaveasjsonfile
+msgid "Save as Json file."
+msgstr "Opslaan als Json bestand."
+
+#: resourcestrings.rssavejsontext
+msgid "Save the Json text."
+msgstr "Sla de Json tekst op."
+
+#: resourcestrings.rssaving
+msgid "Saving..."
+msgstr "Bezig met opslaan..."
+
+#: resourcestrings.rsshowhelptext
+msgid "Show help text when the mouse moves over a component."
+msgstr "Toon hulpteksen als de muis over een component beweegt."
+
+#: resourcestrings.rsstoremruerror
+msgid "Error saving recently opened files list."
+msgstr "Fout bij het opslaan van de recent geopende bestanden lijst."
+
+#: resourcestrings.rsstorescreenpos
+msgid "Save screen position of : "
+msgstr "Opslaan schermpositie van : "
+
+#: resourcestrings.rswarning
+msgid "Warning."
+msgstr "Waarschuwing."
+
+#: tfrmmain.button1.caption
+msgid "Button1"
+msgstr ""
+
+#: tfrmmain.buttonclear.caption
+msgctxt "tfrmmain.buttonclear.caption"
+msgid "C&lear"
+msgstr "&Leeg maken"
+
+#: tfrmmain.buttonclose.caption
+msgctxt "tfrmmain.buttonclose.caption"
+msgid "&Quit"
+msgstr "Afsluiten"
+
+#: tfrmmain.buttonsave.caption
+msgctxt "tfrmmain.buttonsave.caption"
+msgid "&Save"
+msgstr "Op&slaan"
+
+#: tfrmmain.buttonsearch.caption
+msgctxt "tfrmmain.buttonsearch.caption"
+msgid "Search"
+msgstr "Zoeken"
+
+#: tfrmmain.caption
+msgid "FrmMain"
+msgstr "Json Viewer"
+
+#: tfrmmain.cbcasesensitive.caption
+msgctxt "tfrmmain.cbcasesensitive.caption"
+msgid "&Case Sensitive"
+msgstr "&Hoofdlettergevoelig"
+
+#: tfrmmain.labelsearchresult.caption
+msgid "0 st."
+msgstr "0 st."
+
+#: tfrmmain.labelsyneditpos.caption
+msgid "              "
+msgstr ""
+
+#: tfrmmain.menuitemclear.caption
+msgid "Clear"
+msgstr "&Leeg maken"
+
+#: tfrmmain.menuitemcollapseall.caption
+msgid "Collapse all"
+msgstr "Volledig inklappen"
+
+#: tfrmmain.menuitemcollapseselectednode.caption
+msgid "Collapse selected Node"
+msgstr "Geselecteerde node inklappen"
+
+#: tfrmmain.menuitemexpandall.caption
+msgid "Expand all"
+msgstr "Volledig uitklappen"
+
+#: tfrmmain.menuitemexpandselectednode.caption
+msgid "Expand selected node"
+msgstr "Geselecteerde node uitklappen"
+
+#: tfrmmain.menuitemincomingorder.caption
+msgid "Sort incoming order"
+msgstr "Volgorde van openen"
+
+#: tfrmmain.menuitemjson.caption
+msgid "&Json"
+msgstr "&Json"
+
+#: tfrmmain.menuitemjsonclear.caption
+msgctxt "tfrmmain.menuitemjsonclear.caption"
+msgid "C&lear"
+msgstr "&Leeg maken"
+
+#: tfrmmain.menuitemjsonprettify.caption
+msgid "&Prettify"
+msgstr "&Verfraaien"
+
+#: tfrmmain.menuitemjsonsave.caption
+msgctxt "tfrmmain.menuitemjsonsave.caption"
+msgid "&Save"
+msgstr "Op&slaan"
+
+#: tfrmmain.menuitemoptions.caption
+msgid "&Options"
+msgstr "&Opties"
+
+#: tfrmmain.menuitemoptionsconfigure.caption
+msgid "&Configure"
+msgstr "&Instellingen"
+
+#: tfrmmain.menuitemoptionslanguage.caption
+msgid "&Language"
+msgstr "&Taal"
+
+#: tfrmmain.menuitemoptionslanguageen.caption
+msgid "&English"
+msgstr "&Engels"
+
+#: tfrmmain.menuitemoptionslanguagenl.caption
+msgid "&Dutch"
+msgstr "&Nederlands"
+
+#: tfrmmain.menuitemprettify.caption
+msgctxt "tfrmmain.menuitemprettify.caption"
+msgid "Prettify"
+msgstr "Verfraaien"
+
+#: tfrmmain.menuitemprogram.caption
+msgid "&Program"
+msgstr "&Programma"
+
+#: tfrmmain.menuitemprogramclose.caption
+msgctxt "tfrmmain.menuitemprogramclose.caption"
+msgid "&Quit"
+msgstr "Afsluiten"
+
+#: tfrmmain.menuitemprogrammrulist.caption
+msgid "Recently opened files"
+msgstr "Onlangs geopende bestanden"
+
+#: tfrmmain.menuitemprogramopenfile.caption
+msgid "&Open json file..."
+msgstr "Open json bestand..."
+
+#: tfrmmain.menuitemsave.caption
+msgctxt "tfrmmain.menuitemsave.caption"
+msgid "&Save"
+msgstr "Op&slaan"
+
+#: tfrmmain.menuitemselectall.caption
+msgid "Select &all"
+msgstr "Selecteer &alles"
+
+#: tfrmmain.menuitemsort.caption
+msgid "Sort alphabetically"
+msgstr "Alfabetisch"
+
+#: tfrmmain.menuitemsortasc.caption
+msgid "Sort ascending"
+msgstr "Sorteer oplopend"
+
+#: tfrmmain.menuitemsortdesc.caption
+msgid "Sort descending"
+msgstr "Sorteer aflopend"
+
+#: tfrmmain.panellistboxfilenames.caption
+msgid "PanelListBoxFileNames"
+msgstr "PanelListBoxFileNames"
+
+#: tfrmmain.panelmemo.caption
+msgid "PanelMemo"
+msgstr "PanelMemo"
+
+#: tfrmmain.paneltrv.caption
+msgid "PanelTrv"
+msgstr "PanelTrv"
+
+#: tfrmmain.paneltrvtop.caption
+msgid "PanelTrvTop"
+msgstr "PanelTrvTop"
+
+#: tfrmmain.radiogroupsearchoptions.caption
+msgctxt "tfrmmain.radiogroupsearchoptions.caption"
+msgid "Search"
+msgstr "Zoeken"
+
+#: tfrm_configure.buttonclose.caption
+msgid "Close"
+msgstr "Sluiten"
+
+#: tfrm_configure.caption
+msgid "Frm_Configure"
+msgstr "Instellingen"
+
+#: tfrm_configure.checkboxactivatelogging.caption
+msgid "Activate logging"
+msgstr "Activeer logging"
+
+#: tfrm_configure.checkboxappendlogfile.caption
+msgid "Append log file"
+msgstr "Log bestand aanvullen"
+
+#: tfrm_configure.checkboxdisplayhelptext.caption
+msgid "Show help text"
+msgstr "Toon help tekst"
+
+#: tfrm_configure.checkboxtrvhottrack.caption
+msgid "Treeview hottrack"
+msgstr "Treeview hottrack"
+
+#: tfrm_configure.groupbox1.caption
+msgid "Json highlight settings"
+msgstr "Json highlight opties"
+
+#: tfrm_configure.groupboxdivers.caption
+msgid "Miscellaneous"
+msgstr "Divers"
+
+#: tfrm_configure.groupboxlogging.caption
+msgid "Logging"
+msgstr "Logging"
+
+#: tfrm_configure.labelstatus.caption
+msgid "            "
+msgstr "            "
+
+#: tfrm_configure.labelstringattrib.caption
+msgid "Color string attribute"
+msgstr "Kleur string attribuut"
+
+#: tfrm_configure.labelstringattrib1.caption
+msgid "Color punctuation marks attribute"
+msgstr "Kleur leestekens attribuut"
+
+#: tfrm_configure.labelstringattrib2.caption
+msgid "Color number attribute"
+msgstr "Kleur nummer attribuut"
+
+#: tfrm_configure.labelstringattrib3.caption
+msgid "Color key attribute (null)"
+msgstr "Kleur sleutel attibuut (null)"
+
+#: tfrm_configure.labelstringattrib4.caption
+msgid "Color brace attribute"
+msgstr "Kleur accolade attribuut"
+
+#: tfrm_configure.labelstringattrib5.caption
+msgid "Color comment attribute"
+msgstr "Kleur opmerkingen attribuut"
