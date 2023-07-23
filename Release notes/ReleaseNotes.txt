@@ -8,7 +8,8 @@ You can also open a json file with drag and drop.
 By pasting a json text in the memo, the tree structure of the json is displayed. If your json is plain text it will be formatted automatically
 Right-clicking on the tree structure displays some collapse and expand options.
 
-
+23-07-2023
+Added printing and some bug fixing.
 
 
 
