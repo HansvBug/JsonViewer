@@ -7,8 +7,7 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, DefaultTranslator, lcltranslator, Form_Main,
-  SynEditSearch, printer4lazarus, PrinterUtils
+  Forms, DefaultTranslator, lcltranslator, Form_Main
   { you can add units after this };
 
 {$R *.res}
